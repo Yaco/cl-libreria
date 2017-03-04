@@ -1,0 +1,7 @@
+<?php
+
+$DOMAIN = 'libreria.culturalibresca.dev';
+$APP_ID = 'XXX';
+$SECRET_KEY = 'XXX';
+
+?>
