@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 echo 'access_token: ' . $_SESSION['access_token'];
 
 require 'assets/meli-php-sdk/Meli/meli.php';
@@ -41,28 +40,28 @@ if($_GET['code'] || $_SESSION['access_token']) {
 		"condition" => "new",
 		"description" => "Item:, NO OFERTAR",
 	    "attributes" => array(
-	        array( 
-	        	"id" => "AUTHOR", 
-	        	"value_name" => "Autor" 
+	        array(
+	        	"id" => "AUTHOR",
+	        	"value_name" => "Autor"
 	        ),
-	        array( 
-	        	"id" => "PUBLISHER", 
-	        	"value_name" => "Editorial" 
+	        array(
+	        	"id" => "PUBLISHER",
+	        	"value_name" => "Editorial"
 	        ),
-	        array( 
-	        	"id" => "FORMAT", 
-	        	"value_name" => "Digital" 
+	        array(
+	        	"id" => "FORMAT",
+	        	"value_name" => "Digital"
 	        ),
-	        array( 
-	        	"id" => "LANGUAGE", 
-	        	"value_name" => "Español" 
+	        array(
+	        	"id" => "LANGUAGE",
+	        	"value_name" => "Español"
 	        ),
-	        array( 
-	        	"id" => "ISBN", 
-	        	"value_name" => "0123456789" 
+	        array(
+	        	"id" => "ISBN",
+	        	"value_name" => "0123456789"
 	        ),
 
-	    ),		
+	    ),
 		"pictures" => array(
 			array(
 				"source" => "https://upload.wikimedia.org/wikipedia/commons/f/fd/Ray_Ban_Original_Wayfarer.jpg"
@@ -72,7 +71,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 			)
 		)
 	);
-	
+
 	// We call the post request to list a item
 	echo '<pre>';
 	print_r($meli->post('/items', $item, array('access_token' => $_SESSION['access_token'])));
@@ -81,4 +80,3 @@ if($_GET['code'] || $_SESSION['access_token']) {
 
 	echo '<a href="' . $meli->getAuthUrl('https://'.$DOMAIN.'/login.php', Meli::$AUTH_URL['MLA']) . '">Login using MercadoLibre oAuth 2.0</a>';
 }
-
