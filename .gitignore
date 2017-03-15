@@ -1,2 +1,5 @@
 includes/config.php
 files/*
+tmp/*
+!tmp/.gitkeep
+!files/.gitkeep
