@@ -1,5 +1,6 @@
 <?php
 session_start();
+putenv("LANG=es_AR.UTF-8");
 
 echo 'access_token: ' . $_SESSION['access_token'];
 
@@ -9,6 +10,43 @@ require 'includes/config.php';
 $meli = new Meli($APP_ID, $SECRET_KEY);
 
 if($_GET['code'] || $_SESSION['access_token']) {
+
+	// Movemos el archivo
+
+
+	$parte1 = trim($_POST['autor_apellido'][0]); // primera letra del apellido
+	$parte2 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_apellido']))) . '-' . preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_nombre']))); // apellido-nombres
+	$parte3 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', $_POST['titulo'])); // apellido-nombre-titulo
+	$ext = explode('.',$_POST['archivo']); // extension del archivo original
+
+	$destino = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext[1]}");
+	$destino_opf = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.opf");
+	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.jpg");
+
+
+	//	echo $destino;
+	if (!is_dir(dirname($destino))) {
+	    mkdir(dirname($destino), 0777, true);
+	}
+	rename($_POST['archivo'], $destino);
+
+	$metadata = shell_exec("ebook-meta {$destino} -t '{$_POST['titulo']}' -a '{$_POST['autor_nombre']} {$_POST['autor_apellido']}' -p '{$_POST['editorial']}' -d '{$_POST['ano']}-01-01' --tags '{$_POST['cat']}'");
+
+	// Genera OPF
+	$metadata = shell_exec("ebook-meta {$destino} --to-opf={$destino_opf}");
+
+	// Movemos la imagen de portada
+
+	if ($_POST['portada_url'] == 'tmp/cover.jpg') {
+		rename($_POST['portada_url'], $destino_img);
+	} else {
+		$wget = shell_exec('wget -O ' . $destino_img . ' ' . $_POST['portada_url']);
+	}
+
+	// Almcenamos metadatos en archivo
+
+	$metadata = shell_exec("ebook-meta -t {$_POST['titulo']} -a {$_POST['autor_nombre']} {$_POST['autor_apellido']} -p {$_POST['editorial']} -d {$_POST['ano']}-01-01 -l es {$destino}");
+
 
 	// If the code was in get parameter we authorize
 
@@ -27,26 +65,26 @@ if($_GET['code'] || $_SESSION['access_token']) {
 			echo "Exception: ",  $e->getMessage(), "\n";
 		}
 	}
-
+	$titulo = strtoupper($_POST['titulo']);
 	// We construct the item to POST
 	$item = array(
-		"title" => "Item de Prueba – Por favor, NO OFERTAR",
-		"category_id" => "MLA1227",
-		"price" => 10,
+		"title" => "{$titulo} | Libro digital",
+		"category_id" => "{$_POST['categoria']}",
+		"price" => $_POST['precio'],
 		"currency_id" => "ARS",
-		"available_quantity" => 1,
+		"available_quantity" => 10,
 		"buying_mode" => "buy_it_now",
 		"listing_type_id" => "bronze",
 		"condition" => "new",
-		"description" => "Item:, NO OFERTAR",
+		"description" => '<p style="text-align: center;"><strong><span style="font-size: xx-large;"><br /></span></strong></p><p style="text-align: center;"><strong><span style="font-size: xx-large;">'.$titulo.'</span></strong></p><p style="text-align: center;"><span style="font-size: x-large;">'.$_POST['autor_nombre'].' '.$_POST['autor_apellido'].'</span></p><p style="text-align: center;"><span style="font-size: medium;">Editorial: '.$_POST['editorial'].' - Año: '.$_POST['ano'].'</span></p><p style="text-align: center;"></p><p style="text-align: center;"><span style="font-size: medium;">Version Digital</span></p>',
 	    "attributes" => array(
 	        array(
 	        	"id" => "AUTHOR",
-	        	"value_name" => "Autor"
+	        	"value_name" => "{$_POST['autor_nombre']} {$_POST['autor_apellido']}"
 	        ),
 	        array(
 	        	"id" => "PUBLISHER",
-	        	"value_name" => "Editorial"
+	        	"value_name" => "{$_POST['editorial']}"
 	        ),
 	        array(
 	        	"id" => "FORMAT",
@@ -56,24 +94,24 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	        	"id" => "LANGUAGE",
 	        	"value_name" => "Español"
 	        ),
-	        array(
-	        	"id" => "ISBN",
-	        	"value_name" => "0123456789"
-	        ),
+	        // array(
+	        // 	"id" => "ISBN",
+	        // 	"value_name" => "0123456789"
+	        // ),
 
 	    ),
 		"pictures" => array(
 			array(
-				"source" => "https://upload.wikimedia.org/wikipedia/commons/f/fd/Ray_Ban_Original_Wayfarer.jpg"
-			),
-			array(
-				"source" => "https://upload.wikimedia.org/wikipedia/commons/a/ab/Teashades.gif"
+				"source" => 'https://'.$DOMAIN.'/'.$destino_img
 			)
 		)
 	);
 
 	// We call the post request to list a item
 	echo '<pre>';
+
+
+//	print_r($item);
 	print_r($meli->post('/items', $item, array('access_token' => $_SESSION['access_token'])));
 	echo '</pre>';
 } else {
