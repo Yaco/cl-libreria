@@ -18,10 +18,11 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$parte2 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_apellido']))) . '-' . preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_nombre']))); // apellido-nombres
 	$parte3 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', $_POST['titulo'])); // apellido-nombre-titulo
 	$ext = explode('.',$_POST['archivo']); // extension del archivo original
+	$ext_img = explode('.',$_POST['portada_url']); // extension de la imagen
 
 	$destino = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext[1]}");
 	$destino_opf = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.opf");
-	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.jpg");
+	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext_img[1]}");
 
 
 	//	echo $destino;
