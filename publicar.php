@@ -102,7 +102,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	    ),
 		"pictures" => array(
 			array(
-				"source" => 'https://'.$DOMAIN.'/'.$destino_img
+				"source" => "https://{$DOMAIN}/{$destino_img}"
 			)
 		)
 	);
@@ -111,7 +111,8 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	echo '<pre>';
 
 
-//	print_r($item);
+	print_r($item);
+	echo "------------------------------------------------";
 	print_r($meli->post('/items', $item, array('access_token' => $_SESSION['access_token'])));
 	echo '</pre>';
 } else {
