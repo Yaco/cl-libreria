@@ -1,3 +1,17 @@
+<?php
+session_start();
+putenv("LANG=es_AR.UTF-8");
+
+echo 'access_token: ' . $_SESSION['access_token'];
+
+require 'assets/meli-php-sdk/Meli/meli.php';
+require 'includes/config.php';
+
+$meli = new Meli($APP_ID, $SECRET_KEY);
+
+if($_GET['code'] || $_SESSION['access_token']) {
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,3 +64,11 @@
 
   </body>
 </html>
+
+<?php
+} else {
+
+	echo '<a href="' . $meli->getAuthUrl('https://'.$DOMAIN.'/login.php', Meli::$AUTH_URL['MLA']) . '">Login using MercadoLibre oAuth 2.0</a>';
+}
+
+?>
