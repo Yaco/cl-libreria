@@ -19,11 +19,6 @@ if (file_exists($target_file)) {
     echo "El archivo ya existe.";
     $uploadOk = 0;
 }
-// Check file size
-if ($_FILES["fileToUpload"]["size"] > 500000) {
-    echo "Sorry, your file is too large.";
-    $uploadOk = 0;
-}
 // Allow certain file formats
 if($imageFileType != "pdf" && $imageFileType != "epub" ) {
     echo "No es un PDF ni un EPUB.";
