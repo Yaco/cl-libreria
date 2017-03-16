@@ -79,6 +79,10 @@ if($_GET['code'] || $_SESSION['access_token']) {
 		"condition" => "new",
 		"description" => '<p style="text-align: center;"><strong><span style="font-size: xx-large;"><br /></span></strong></p><p style="text-align: center;"><strong><span style="font-size: xx-large;">'.$titulo.'</span></strong></p><p style="text-align: center;"><span style="font-size: x-large;">'.$_POST['autor_nombre'].' '.$_POST['autor_apellido'].'</span></p><p style="text-align: center;"><span style="font-size: medium;">Editorial: '.$_POST['editorial'].' - Año: '.$_POST['ano'].'</span></p><p style="text-align: center;"></p><p style="text-align: center;"><span style="font-size: medium;">Version Digital</span></p>',
 	    "attributes" => array(
+					array(
+						"id" => "EAN",
+						"value_name" => "9780471117094"
+					),
 	        array(
 	        	"id" => "AUTHOR",
 	        	"value_name" => "{$_POST['autor_nombre']} {$_POST['autor_apellido']}"
@@ -111,7 +115,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	// Publicamos el item
 	$ml_return = $meli->post('/items', $item, array('access_token' => $_SESSION['access_token']));
 
-	echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo</a></h2>";
+	//echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo</a></h2>";
 	echo "------------------------------------------------";
 	echo '<pre>';
 	print_r($item);
