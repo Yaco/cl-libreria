@@ -2,8 +2,6 @@
 session_start();
 putenv("LANG=es_AR.UTF-8");
 
-echo 'access_token: ' . $_SESSION['access_token'];
-
 require 'assets/meli-php-sdk/Meli/meli.php';
 require 'includes/config.php';
 
@@ -17,8 +15,10 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$parte1 = trim($_POST['autor_apellido'][0]); // primera letra del apellido
 	$parte2 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_apellido']))) . '-' . preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', trim($_POST['autor_nombre']))); // apellido-nombres
 	$parte3 = preg_replace('/[^A-Za-z0-9\-_\']/', '',  str_replace(' ', '_', $_POST['titulo'])); // apellido-nombre-titulo
-	$ext = explode('.',$_POST['archivo']); // extension del archivo original
-	$ext_img = explode('.',$_POST['portada_url']); // extension de la imagen
+	$ext_tmp = explode('.',$_POST['archivo']); // extension del archivo original
+	$ext = end($ext_tmp);
+	$ext_img_tmp = explode('.',$_POST['portada_url']); // extension de la imagen
+	$ext_img = end($ext_img_tmp);
 
 	$destino = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext[1]}");
 	$destino_opf = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.opf");
@@ -108,13 +108,16 @@ if($_GET['code'] || $_SESSION['access_token']) {
 		)
 	);
 
-	// We call the post request to list a item
+	// Publicamos el item
+	$ml_return = $meli->post('/items', $item, array('access_token' => $_SESSION['access_token']));
+
+	echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo</a></h2>";
+	echo "------------------------------------------------";
 	echo '<pre>';
-
-
 	print_r($item);
 	echo "------------------------------------------------";
-	print_r($meli->post('/items', $item, array('access_token' => $_SESSION['access_token'])));
+
+	print_r($ml_return);
 	echo '</pre>';
 } else {
 
