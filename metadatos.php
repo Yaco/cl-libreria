@@ -31,7 +31,7 @@ if($_GET['file']) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Información bibliográfica</title>
+    <title>Información bibliográfica - <?php echo $_GET['file']; ?></title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
@@ -69,6 +69,14 @@ if($_GET['file']) {
 
         });
       }
+
+      $(function() {
+        $('#cat').on('change', function(){
+          var selected = $(this).find("option:selected").data('subtext');
+          $('#categoria').val(selected);
+
+        });
+      });
 
       function portadas() {
         var titulo = encodeURIComponent($( "#titulo" ).val());
@@ -196,7 +204,7 @@ if($_GET['file']) {
                 include('includes/categorias.php');
                 ?>
               </select>
-              <input id="categoria" name="categoria" type="text" placeholder="" class="hide form-control input-md" value="">
+              <input id="categoria" name="categoria" type="text" placeholder="" class="form-control input-md" value="MLA40490">
 
               <button onClick="adivinar();" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Adivinar

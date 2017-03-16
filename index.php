@@ -52,7 +52,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
         <div class="form-group">
           <label class="col-md-4 control-label" for="submit"></label>
           <div class="col-md-4">
-            <button type="submit" class="btn btn-default">Subir archivo</button>
+            <button type="submit" name='btnSubir' class="btn btn-default">Subir archivo</button>
           </div>
         </div>
 
@@ -60,6 +60,33 @@ if($_GET['code'] || $_SESSION['access_token']) {
       </fieldset>
 
     </form>
+    <form class="form-horizontal" action="subir.php" method="post" enctype="multipart/form-data">
+      <fieldset>
+
+        <!-- Form Name -->
+        <legend>Indica una URL para descargar un archivo</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="archivo">Ruta</label>
+          <div class="col-md-4">
+            <input type="text" name="fileToDL" id="fileToDL" class="form-control input-md" placeholder="Ruta completa" value='<?php echo $_GET['dl']; ?>'>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="submit"></label>
+          <div class="col-md-4">
+            <button type="submit" name="btnBajar" class="btn btn-default">Cargar desde URL</button>
+          </div>
+        </div>
+
+
+      </fieldset>
+
+    </form>
+
+
   </div>
 
   </body>
