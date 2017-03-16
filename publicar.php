@@ -20,9 +20,9 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$ext_img_tmp = explode('.',$_POST['portada_url']); // extension de la imagen
 	$ext_img = end($ext_img_tmp);
 
-	$destino = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext[1]}");
+	$destino = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext}");
 	$destino_opf = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.opf");
-	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext_img[1]}");
+	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext_img}");
 
 
 	//	echo $destino;
