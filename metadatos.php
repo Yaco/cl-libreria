@@ -1,5 +1,7 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 //include('assets/simple_html_dom/simple_html_dom.php');
 
@@ -10,6 +12,7 @@ if($_GET['file']) {
 
   // Usamos ebook-meta para obtener los metadatos, luego los cargamos en un array llamado $metadatos
   $metadata = shell_exec('ebook-meta ' . $_GET['file']);
+
   if ($a = explode("\n", $metadata)) { // create parts
     foreach ($a as $s) { // each part
       if ($s) {

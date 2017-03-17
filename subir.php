@@ -4,8 +4,13 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 if (isset($_POST['btnSubir'])) {
 
-  $target_dir = "tmp/";
-  $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+  // $target_dir = "tmp/";
+  // $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+  $ext_tmp = explode('.',$_FILES["fileToUpload"]["name"]); // extension del archivo original
+  $ext = end($ext_tmp);
+  $target_file = 'tmp/temp.'.$ext;
+  $metadata = shell_exec('wget ' . $_FILES["fileToUpload"]["name"] . ' -O '. $target_file);
+
   $uploadOk = 1;
   $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
   // Check if image file is a actual image or fake image
@@ -20,10 +25,10 @@ if (isset($_POST['btnSubir'])) {
   //     }
   // }
   // Check if file already exists
-  if (file_exists($target_file)) {
-      echo "El archivo ya existe.";
-      $uploadOk = 0;
-  }
+  // if (file_exists($target_file)) {
+  //     echo "El archivo ya existe.";
+  //     $uploadOk = 0;
+  // }
   // Allow certain file formats
   if($imageFileType != "pdf" && $imageFileType != "epub" ) {
       echo "No es un PDF ni un EPUB.";
@@ -48,7 +53,7 @@ if (isset($_POST['btnSubir'])) {
 
   $target_file = 'tmp/temp.'.$ext;
   $metadata = shell_exec('wget ' . $_POST['fileToDL'] . ' -O '. $target_file);
-print_r($metadata);
+
   if (!file_exists($target_file)) {
       echo "No se descargo el archivo";
       exit();
