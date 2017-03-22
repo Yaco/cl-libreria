@@ -25,7 +25,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext_img}");
 
 
-	//	echo $destino;
+	echo $destino;
 	if (!is_dir(dirname($destino))) {
 	    mkdir(dirname($destino), 0777, true);
 	}
