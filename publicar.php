@@ -25,7 +25,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$destino_img = strtolower("files/{$parte1}/{$parte2}/{$parte3}/{$parte2}-{$parte3}.{$ext_img}");
 
 
-	echo $destino;
+	// echo $destino;
 	if (!is_dir(dirname($destino))) {
 	    mkdir(dirname($destino), 0777, true);
 	}
@@ -115,7 +115,14 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	// Publicamos el item
 	$ml_return = $meli->post('/items', $item, array('access_token' => $_SESSION['access_token']));
 
-	//echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo</a></h2>";
+	echo "<center>";
+	echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo en ML</a></h2>";
+	echo "<h2><a href='/'>Cargar otro libro</a></h2>";
+	echo "<h4><a href='{$destino}'>Descargar archivo subido</a></h4>";
+	echo "</center>"
+
+
+
 	echo "------------------------------------------------";
 	echo '<pre>';
 	print_r($item);
