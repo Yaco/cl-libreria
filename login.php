@@ -2,9 +2,6 @@
 session_start();
 
 echo 'access_token: ' . $_SESSION['access_token'];
-
-echo '<br /><a href="publicar.php">publicar</a>';
-
 require 'assets/meli-php-sdk/Meli/meli.php';
 require 'includes/config.php';
 
@@ -16,7 +13,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	if($_GET['code'] && !($_SESSION['access_token'])) {
 		// If the code was in get parameter we authorize
 		$user = $meli->authorize($_GET['code'], 'https://'.$DOMAIN.'/login.php');
-		
+
 		// Now we create the sessions with the authenticated user
 		$_SESSION['access_token'] = $user['body']->access_token;
 		$_SESSION['expires_in'] = time() + $user['body']->expires_in;
@@ -38,10 +35,12 @@ if($_GET['code'] || $_SESSION['access_token']) {
 		}
 	}
 
+	echo '<h2><a href="/subir.php">Empezar a publicar un libro!</a></h2>';
+
 	echo '<pre>';
 		print_r($_SESSION);
 	echo '</pre>';
-	
+
 } else {
-	echo '<a href="' . $meli->getAuthUrl('https://'.$DOMAIN.'/login.php', Meli::$AUTH_URL['MLA']) . '">Login using MercadoLibre oAuth 2.0</a>';
+	echo '<a href="' . $meli->getAuthUrl('https://'.$DOMAIN.'/login.php', Meli::$AUTH_URL['MLA']) . '">Click aqui para iniciar sesión en ML</a>';
 }
