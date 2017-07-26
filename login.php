@@ -35,7 +35,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 		}
 	}
 
-	echo '<h2><a href="/subir.php">Empezar a publicar un libro!</a></h2>';
+	echo '<h2><a href="/">Empezar a publicar un libro!</a></h2>';
 
 	echo '<pre>';
 		print_r($_SESSION);

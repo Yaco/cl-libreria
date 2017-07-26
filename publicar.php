@@ -116,10 +116,11 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	$ml_return = $meli->post('/items', $item, array('access_token' => $_SESSION['access_token']));
 
 	echo "<center>";
-	echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo en ML</a></h2>";
+	echo '<h1><a href="'. $ml_return['body']->permalink . '">Ir al articulo en ML</a></h1>';
 	echo "<h2><a href='/'>Cargar otro libro</a></h2>";
 	echo "<h4><a href='{$destino}'>Descargar archivo subido</a></h4>";
 	echo "</center>";
+
 
 
 
