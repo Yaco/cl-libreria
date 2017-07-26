@@ -119,7 +119,7 @@ if($_GET['code'] || $_SESSION['access_token']) {
 	echo "<h2><a href='{$ml_return['body']['permalink']}'>Ir al articulo en ML</a></h2>";
 	echo "<h2><a href='/'>Cargar otro libro</a></h2>";
 	echo "<h4><a href='{$destino}'>Descargar archivo subido</a></h4>";
-	echo "</center>"
+	echo "</center>";
 
 
 
